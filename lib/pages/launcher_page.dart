@@ -1,6 +1,7 @@
-import 'package:art_sweetalert/art_sweetalert.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:game_app/pages/story_page.dart';
+
 
 class LauncherPage extends StatefulWidget {
   static const String routeName='/launcher';
@@ -99,7 +100,11 @@ class _LauncherPageState extends State<LauncherPage> {
                                                     children: [
                                                       Image.asset('images/albus.png',width: 100,),
                                                       SizedBox(width: 10,),
-                                                      Image.asset('images/cristine.png',width: 100,),
+                                                      InkWell(
+                                                        onTap: (){
+                                                          Navigator.pushNamed(context, StoryPage.routeName);
+                                                        },
+                                                          child: Image.asset('images/cristine.png',width: 100,)),
                                                     ],
 
                                                   ),
