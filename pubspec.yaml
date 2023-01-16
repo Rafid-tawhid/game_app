@@ -39,7 +39,12 @@ dependencies:
   ezanimation:
   animated_widgets:
   flutter_svg: ^1.1.6
-
+  shared_preferences: ^2.0.16
+  intl:
+  firebase_core: ^2.4.0
+  firebase_auth: ^4.2.1
+  cloud_firestore: ^4.2.0
+  firebase_storage: ^11.0.8
 
 dev_dependencies:
   flutter_test:

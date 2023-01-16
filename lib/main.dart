@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:game_app/pages/dragons_de_page.dart';
 import 'package:game_app/pages/launcher_page.dart';
@@ -9,7 +10,9 @@ import 'package:game_app/pages/story_page.dart';
 import 'pages/division_page.dart';
 import 'pages/multiply_page.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -25,7 +28,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: DivisionPage.routeName,
+      initialRoute: PracticePage.routeName,
       routes: {
         LauncherPage.routeName:(context)=>const LauncherPage(),
         StoryPage.routeName:(context)=>const StoryPage(),
