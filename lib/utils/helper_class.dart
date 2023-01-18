@@ -14,8 +14,6 @@ class HelperClass{
 
  static Future<int> fetchHigestScoreFromSharedPref(String tag) async {
     final prefs = await SharedPreferences.getInstance();
-
-
     return prefs.getInt(tag)!;
   }
 }
