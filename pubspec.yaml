@@ -47,6 +47,7 @@ dependencies:
   firebase_storage: ^11.0.8
   google_fonts: ^3.0.1
   video_player: ^2.4.10
+  audioplayers: ^0.20.1
 
 
 
@@ -76,6 +77,8 @@ flutter:
   assets:
     - images/
     - svg/
+    - assets/play.wav
+    - assets/buzzer.wav
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

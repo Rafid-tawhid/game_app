@@ -61,7 +61,7 @@ class _VideoplayerPageState extends State<VideoplayerPage> {
                         : Container(),
                   ),
                   _isPlaying?Text(''):Positioned(
-                    bottom: 20,
+                    bottom: 10,
                     left: 0,
                     right: 0,
                     child: Container(
@@ -81,8 +81,8 @@ class _VideoplayerPageState extends State<VideoplayerPage> {
                               splashColor: Colors.greenAccent,
                               elevation: 8.0,
                               child: Container(
-                                height: 100,
-                                width: 100,
+                                height: 50,
+                                width: 50,
                                 decoration: const BoxDecoration(
                                   image: DecorationImage(
                                       image: AssetImage('images/btn_video.png',),

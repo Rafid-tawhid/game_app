@@ -6,6 +6,7 @@ import 'package:game_app/pages/dragons_de_page.dart';
 import 'package:game_app/pages/launcher_page.dart';
 import 'package:game_app/pages/multiplication_page.dart';
 import 'package:game_app/pages/plus_page.dart';
+import 'package:game_app/pages/signup_page.dart';
 import 'package:game_app/pages/story_page.dart';
 import 'package:game_app/pages/story_play_page.dart';
 
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: VideoplayerPage.routeName,
+      initialRoute: LauncherPage.routeName,
       routes: {
         LauncherPage.routeName:(context)=>const LauncherPage(),
         DragonsDenPage.routeName:(context)=>const DragonsDenPage(),
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
         MultiplicationPage.routeName:(context)=>const MultiplicationPage(),
         DivisionPage.routeName:(context)=>const DivisionPage(),
         VideoplayerPage.routeName:(context)=>const VideoplayerPage(),
+        SignUpPage.routeName:(context)=>const SignUpPage(),
 
       },
     );

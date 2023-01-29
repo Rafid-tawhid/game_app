@@ -1,6 +1,9 @@
 
 import 'package:flutter/material.dart';
+import 'package:game_app/pages/dashboard_page.dart';
+import 'package:game_app/pages/signup_page.dart';
 import 'package:game_app/pages/story_page.dart';
+import 'package:game_app/pages/story_play_page.dart';
 
 
 class LauncherPage extends StatefulWidget {
@@ -46,9 +49,14 @@ class _LauncherPageState extends State<LauncherPage> {
                           Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Align(
-                                  alignment: Alignment.center,
-                                  child: Image.asset('images/btn_practice.png',width: weight/2.5,)),
+                              InkWell(
+                                child: Align(
+                                    alignment: Alignment.center,
+                                    child: Image.asset('images/btn_practice.png',width: weight/2.5,)),
+                                onTap: (){
+                                  Navigator.pushNamed(context, DashboardPage.routeName);
+                                },
+                              ),
                               SizedBox(height: 10,),
                               Align(
                                   alignment: Alignment.center,
@@ -216,9 +224,160 @@ class _LauncherPageState extends State<LauncherPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.asset('images/create.png',width: 100,),
+                    InkWell(
+                        child: Image.asset('images/create.png',width: 100,),
+                      onTap: (){
+                          Navigator.pop(context);
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                bool showPass=true;
+                                return StatefulBuilder(
+                                  builder: (context, setState) {
+                                    return showSignUpDialog(showPass, setState);
+                                  },
+                                );
+                              },
+                            );
+
+
+
+                      },
+                    ),
                     SizedBox(width: 10,),
-                    Image.asset('images/login.png',width: 100,),
+                    InkWell(
+                        child: Image.asset('images/login.png',width: 100,),
+                      onTap: (){
+                          Navigator.pushNamed(context, VideoplayerPage.routeName);
+                      },
+                    ),
+                  ],
+
+                )
+
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+
+  AlertDialog showSignUpDialog(bool showPass, StateSetter setState) {
+    return AlertDialog(
+      contentPadding: EdgeInsets.zero,
+      content: Container(
+        color: Colors.blueAccent,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Image.asset('images/register_board.png'),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(height: 30,),
+                Padding(
+                  padding: const EdgeInsets.only(left: 40.0,right: 40),
+                  child: TextFormField(
+                    decoration:  const InputDecoration(
+                        filled: true,
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            width: 3, color: Colors.orange,
+                          ),
+                        ),
+                        fillColor: Colors.white,
+                        contentPadding: EdgeInsets.only(left: 10,right: 5,bottom: 5,top: 5),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            width: 3, color: Colors.orange,
+                          ),
+
+                          //<-- SEE HERE
+                        ),
+                        hintText: 'Username',
+                        hintStyle: TextStyle(color: Colors.blueAccent)
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10,),
+                Padding(
+                  padding: const EdgeInsets.only(left: 40.0,right: 40),
+                  child: TextFormField(
+                    decoration:  const InputDecoration(
+                        filled: true,
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            width: 3, color: Colors.orange,
+                          ),
+                        ),
+                        fillColor: Colors.white,
+                        contentPadding: EdgeInsets.only(left: 10,right: 5,bottom: 5,top: 5),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            width: 3, color: Colors.orange,
+                          ),
+
+                          //<-- SEE HERE
+                        ),
+                        hintText: 'Email',
+                        hintStyle: TextStyle(color: Colors.blueAccent)
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10,),
+                Padding(
+                  padding: const EdgeInsets.only(left: 40.0,right: 40),
+                  child: TextFormField(
+                    keyboardType: TextInputType.visiblePassword,
+                    obscureText: showPass,
+                    decoration:   InputDecoration(
+                        suffixIcon: IconButton(
+                            onPressed: (){
+                              showPass =!showPass;
+                              setState(() {
+                              });
+                              print(showPass);
+                            }, icon: showPass?Icon(Icons.visibility):
+                        Icon(Icons.visibility_off)),
+                        filled: true,
+                        focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                            width: 3, color: Colors.orange,
+                          ),
+                        ),
+                        fillColor: Colors.white,
+                        contentPadding: const EdgeInsets.only(left: 10,right: 5,bottom: 5,top: 5),
+                        enabledBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                            width: 3, color: Colors.orange,
+                          ),
+                          //<-- SEE HERE
+                        ),
+                        hintText: 'Password',
+                        hintStyle: TextStyle(color: Colors.blueAccent)
+                    ),
+
+                  ),
+                ),
+                SizedBox(height: 40,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    InkWell(
+                      child: Image.asset('images/create.png',width: 100,),
+                      onTap: (){
+                        Navigator.pushNamed(context, SignUpPage.routeName);
+                      },
+                    ),
+                    SizedBox(width: 10,),
+                    InkWell(
+                      child: Image.asset('images/login.png',width: 100,),
+                      onTap: (){
+                        Navigator.pushNamed(context, VideoplayerPage.routeName);
+                      },
+                    ),
                   ],
 
                 )

@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:game_app/utils/helper_class.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -278,6 +279,9 @@ class _PlusPageState extends State<PlusPage> {
     //show congratulations toast
 
     if (aa == _sum) {
+      final player = AudioCache();
+      // congrats sound
+      player.play('play.wav');
       // final player = AudioCache();
       // // congrats sound
       // player.play('play.wav');
@@ -292,11 +296,64 @@ class _PlusPageState extends State<PlusPage> {
       _score++;
     } else {
       print("ERROR");
-      print('SUM $_sum');
-      // setState(() {
-      //
-      // });
-     // showToast();
+      final player = AudioCache();
+      player.play('buzzer.wav');
+      showDialog(
+          context: context,
+        builder: (context)=>AlertDialog(
+          content: Container(
+            alignment: Alignment.bottomCenter,
+            height: MediaQuery.of(context).size.height / 2,
+            width: MediaQuery.of(context).size.width,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(
+                  "images/wrong_board.png",
+                ),
+                fit: BoxFit.fill,
+              ),
+            ),
+            child: Container(
+              height: 80,
+              width: MediaQuery.of(context).size.width,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 28.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    GestureDetector(
+                      child: Image.asset(
+                        "images/cancel.png",
+                        fit: BoxFit.cover,
+                        width: 120,
+                      ),
+                      onTap: () {
+
+                      },
+                    ),
+                    GestureDetector(
+                      child: Image.asset(
+                        "images/again.png",
+                        fit: BoxFit.cover,
+                        width: 120,
+                      ),
+                      onTap: () {
+
+                      },
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+        )
+      );
     }
   }
 }
