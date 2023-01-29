@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -293,11 +294,82 @@ class _DivisionPageState extends State<DivisionPage> {
       _score++;
     } else {
       print("ERROR");
-      // showToast();
+
+      final player = AudioCache();
+      player.play('buzzer.wav');
+      WrongMsgDialoge();
 
     }
   }
+  Future<dynamic> WrongMsgDialoge() {
+    return showDialog(context: context, builder: (context)=>AlertDialog(
+      backgroundColor: Colors.transparent,
+      contentPadding: EdgeInsets.zero,
+      content: Container(
+        alignment: Alignment.bottomCenter,
+        height: MediaQuery.of(context).size.height / 2,
+        decoration: const BoxDecoration(
+          color: Colors.transparent,
+          image: DecorationImage(
+            image: AssetImage(
+              "images/wrong_board.png",
+            ),
+            fit: BoxFit.fill,
+          ),
+        ),
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  GestureDetector(
+                    child: Image.asset(
+                      "images/cancel.png",
+                      fit: BoxFit.fill,
+                      width: 90,
+                      height: 40,
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    },
+                  ),
+                  const SizedBox(
+                    width: 6,
+                  ),
+                  GestureDetector(
+                    child: Image.asset(
+                      "images/again.png",
+                      fit: BoxFit.fill,
+                      width: 125,
+                      height: 40,
+                    ),
+                    onTap: () {
 
+                      Navigator.pop(context);
+                      setState(() {
+                        _score=0;
+                      });
+                    },
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  )
+                ],
+              ),
+              SizedBox(height: 70,)
+            ],
+          ),
+        ),
+      ),
+    ));
+  }
 
   void suffle(int rand1, int rand2, int rand3, int sum) {
     if (rand1 == rand2||rand2==rand3) {

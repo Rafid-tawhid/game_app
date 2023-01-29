@@ -92,15 +92,8 @@ class _VideoplayerPageState extends State<VideoplayerPage> {
                               ),
                               // ),
                               onPressed: () {
-
-
-                                // Navigator.push(
-                                //     context,
-                                //     MaterialPageRoute(
-                                //       builder: (context) => HomePage(),
-                                //     ));
                                 Navigator.pushNamed(context, DashboardPage.routeName);
-                                // print(_registerProvider.nameList[0].toString());
+
                               },
                             ),
                           ),

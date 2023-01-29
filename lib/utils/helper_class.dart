@@ -17,3 +17,4 @@ class HelperClass{
     return prefs.getInt(tag)!;
   }
 }
+
