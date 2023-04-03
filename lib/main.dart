@@ -7,6 +7,7 @@ import 'package:game_app/pages/launcher_page.dart';
 import 'package:game_app/pages/multiplication_page.dart';
 import 'package:game_app/pages/plus_page.dart';
 import 'package:game_app/pages/signup_page.dart';
+import 'package:game_app/pages/story_game_page.dart';
 import 'package:game_app/pages/story_page.dart';
 import 'package:game_app/pages/story_play_page.dart';
 
@@ -43,6 +44,7 @@ class MyApp extends StatelessWidget {
         DivisionPage.routeName:(context)=>const DivisionPage(),
         VideoplayerPage.routeName:(context)=>const VideoplayerPage(),
         SignUpPage.routeName:(context)=>const SignUpPage(),
+        StoryGameMode.routeName:(context)=>const StoryGameMode(),
 
       },
     );
