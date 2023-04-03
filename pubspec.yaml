@@ -48,6 +48,7 @@ dependencies:
   google_fonts: ^3.0.1
   video_player: ^2.4.10
   audioplayers: ^0.20.1
+  animated_text_kit: ^4.2.2
 
 
 

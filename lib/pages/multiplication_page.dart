@@ -107,7 +107,6 @@ class _MultiplicationPageState extends State<MultiplicationPage> {
                               children: [
                                 Image.asset('images/number_bg.png'),
                                 Image.asset('images/mup_icon.png',height: 40,),
-
                               ],
                             )),
                             SizedBox(width: 15,),
