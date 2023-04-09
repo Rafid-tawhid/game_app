@@ -4,7 +4,7 @@ import 'package:animated_widgets/widgets/rotation_animated.dart';
 import 'package:animated_widgets/widgets/shake_animated_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:game_app/pages/dashboard_page.dart';
-import 'package:game_app/pages/story_game_page.dart';
+import 'package:game_app/pages/multi_level_page.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoplayerPage extends StatefulWidget {

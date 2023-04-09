@@ -16,5 +16,9 @@ class HelperClass{
     final prefs = await SharedPreferences.getInstance();
     return prefs.getInt(tag)!;
   }
+  static Future<int> fetchLevelFromSharedPref(String tag) async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getInt(tag)!;
+  }
 }
 

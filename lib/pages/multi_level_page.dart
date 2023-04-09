@@ -39,19 +39,19 @@ class _StoryGameModeState extends State<StoryGameMode> with SingleTickerProvider
 
   @override
   void initState() {
-    // HelperClass.fetchHigestScoreFromSharedPref("plus").then((value) {
-    //   setState(() {
-    //     _higestScore=value;
-    //   });
-    // });
+    HelperClass.fetchHigestScoreFromSharedPref("level").then((value) {
+      setState(() {
+        _level=value;
+      });
+    });
     super.initState();
   }
 
   @override
   Future<void> dispose() async {
-    if(_score>=_higestScore){
-      HelperClass.saveHigestScoreToSharedPref(_score, "plus");
-    }
+
+      HelperClass.saveHigestScoreToSharedPref(_level, "level");
+
     super.dispose();
   }
 
@@ -302,22 +302,30 @@ class _StoryGameModeState extends State<StoryGameMode> with SingleTickerProvider
       }
     }
     if(_level==5){
-      int _randFun=_random.nextInt(2);
+      int _randFun=_random.nextInt(4);
       switch(_randFun)
       {
         case 0:mupFunction();
         break;
         case 1:minFunction();
+        break;
+        case 2:plusFunction();
+        break;
+        case 3:divFunction();
         break;
       }
     }
     if(_level==6){
-      int _randFun=_random.nextInt(2);
+      int _randFun=_random.nextInt(4);
       switch(_randFun)
       {
         case 0:mupFunction();
         break;
         case 1:minFunction();
+        break;
+        case 2:plusFunction();
+        break;
+        case 3:divFunction();
         break;
       }
     }
@@ -533,9 +541,8 @@ class _StoryGameModeState extends State<StoryGameMode> with SingleTickerProvider
   }
   void divFunction() {
     setState(() {
-      signImg='images/div.png';
-      int aa = (_random.nextInt(8) & -2);
-      int bb = (_random.nextInt(8) & -2);
+      int aa = (_random.nextInt(8) & -2)+1;
+      int bb = (_random.nextInt(8) & -2)+1;
 
       if(aa<bb)
       {
@@ -548,6 +555,9 @@ class _StoryGameModeState extends State<StoryGameMode> with SingleTickerProvider
         while(_index1 % _index2 != 0)
         {
           _index2 = _random.nextInt(4);
+          if(_index2==0){
+            _index2=1;
+          }
         }
         print(_index1.toString()+" : "+_index2.toString());
       } on IntegerDivisionByZeroException {
@@ -555,12 +565,19 @@ class _StoryGameModeState extends State<StoryGameMode> with SingleTickerProvider
         print("Cannot divide by Zero");
       }
 
-      _res = ((_index1+1) ~/ (_index2+1));
+
+
+      _res = ((_index1) ~/ (_index2));
 
       print('$_index1+": "+$_index2 " : "$_res');
       _rand1 = _random.nextInt(9);
       _rand2 = _random.nextInt(8);
       _rand3 = _random.nextInt(9);
+
+      // _div = (_index1 % _index2 ) ;
+
+      // _score =_score +_index1 + _index2 + 2;
+
       suffle(_rand1, _rand2, _rand3, _res);
     });
   }
