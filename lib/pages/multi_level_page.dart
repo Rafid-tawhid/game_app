@@ -2,11 +2,15 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:art_sweetalert/art_sweetalert.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:circular_countdown_timer/circular_countdown_timer.dart';
+import 'package:circular_countdown_timer/countdown_text_format.dart';
 import 'package:flutter/material.dart';
 import 'package:game_app/utils/helper_class.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stop_watch_timer/stop_watch_timer.dart';
 
 class StoryGameMode extends StatefulWidget {
   static const String routeName='/plus';
@@ -31,8 +35,18 @@ class _StoryGameModeState extends State<StoryGameMode> with SingleTickerProvider
   var b = 0;
   var c = 0;
   var d = 0;
+  static bool showMsg=false;
   final int level=0;
   String signImg='images/plus.png';
+  final CountDownController _controller = CountDownController();
+  final stopWatchTimer = StopWatchTimer(
+      mode: StopWatchMode.countDown,
+      presetMillisecond: StopWatchTimer.getMilliSecFromMinute(2),
+      onEnded: (){
+        calltimerEnd();
+      }
+    // millisecond => minute.
+  );
 
   List<int> list = [];
   final _random = Random.secure();
@@ -51,7 +65,7 @@ class _StoryGameModeState extends State<StoryGameMode> with SingleTickerProvider
   Future<void> dispose() async {
 
       HelperClass.saveHigestScoreToSharedPref(_level, "level");
-
+      stopWatchTimer.dispose();
     super.dispose();
   }
 
@@ -89,7 +103,86 @@ class _StoryGameModeState extends State<StoryGameMode> with SingleTickerProvider
                       child: Column(
                         children: [
                           SizedBox(height: 110,),
-                          Text('Level : ${ _level}', style: GoogleFonts.acme(fontSize: 24,fontWeight: FontWeight.bold,color: Color(0xff20245F))),
+                          Row(
+                            children: [
+                              _level==7?Expanded(
+                                child: CircularCountDownTimer(
+                                  duration: 5,
+                                  initialDuration: 0,
+                                  controller: _controller,
+                                  width: 20,
+                                  height: 20,
+                                  ringColor: Colors.yellowAccent,
+                                  ringGradient: null,
+                                  fillColor: Colors.purpleAccent,
+                                  fillGradient: null,
+                                  backgroundColor: Colors.purple[500],
+                                  backgroundGradient: null,
+                                  strokeWidth: 4.0,
+                                  strokeCap: StrokeCap.round,
+                                  textStyle: const TextStyle(
+                                      fontSize: 12.0, color: Colors.white, fontWeight: FontWeight.bold),
+                                  textFormat: CountdownTextFormat.S,
+                                  isReverse: false,
+                                  isReverseAnimation: false,
+                                  isTimerTextShown: true,
+                                  autoStart: false,
+                                  onStart: () {
+                                    print('Countdown Started');
+                                  },
+                                  onComplete: () {
+                                    _rollTheDice();
+                                    _controller.start();
+                                  },
+                                ),
+                              ):
+                              Expanded(child: Text('')),
+                              Expanded(
+                                  child: Center(child: Text('Level : ${ _level}', style: GoogleFonts.acme(fontSize: 24,fontWeight: FontWeight.bold,color: Color(0xff20245F))))),
+                              Expanded(child:  StreamBuilder<int>(
+                                stream: stopWatchTimer.rawTime,
+                                initialData: 0,
+                                builder: (context, snap) {
+                                  final value = snap.data;
+                                  final displayTime = StopWatchTimer.getDisplayTime(value!,hours: false,milliSecond: false);
+                                  //showStopDialog(displayTime);
+                                  return Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+
+                                      Container(
+
+                                        decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            shape: BoxShape.rectangle,
+                                            border: Border.all(
+                                              color: Colors.blueAccent,
+                                              width: 2,
+                                            ),
+                                            boxShadow: [
+                                              BoxShadow(spreadRadius: 1,blurRadius: 1,color: Colors.white,blurStyle: BlurStyle.outer)
+                                            ],
+                                            borderRadius: BorderRadius.vertical(top: Radius.circular(15),bottom:Radius.circular(15) )
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(left: 8,right: 8,top: 4,bottom: 4),
+                                          child: Text(
+                                            '$displayTime',
+                                            style: GoogleFonts.bubblegumSans(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.pinkAccent),
+                                          ),
+                                        ),
+
+                                      ),
+                                      SizedBox(width: 10,)
+                                    ],
+                                  );
+                                },
+                              ),)
+                            ],
+                          ),
                           SizedBox(height: 10,),
                           Stack(
                             alignment: Alignment.center,
@@ -329,6 +422,34 @@ class _StoryGameModeState extends State<StoryGameMode> with SingleTickerProvider
         break;
       }
     }
+    if(_level==7){
+      int _randFun=_random.nextInt(4);
+      switch(_randFun)
+      {
+        case 0:mupFunction();
+        break;
+        case 1:minFunction();
+        break;
+        case 2:plusFunction();
+        break;
+        case 3:divFunction();
+        break;
+      }
+    }
+    if(_level==8){
+      int _randFun=_random.nextInt(4);
+      switch(_randFun)
+      {
+        case 0:mupFunction();
+        break;
+        case 1:minFunction();
+        break;
+        case 2:plusFunction();
+        break;
+        case 3:divFunction();
+        break;
+      }
+    }
 
   }
 
@@ -361,11 +482,23 @@ class _StoryGameModeState extends State<StoryGameMode> with SingleTickerProvider
 
 
   checkRes(int a) {
-    print('CLICK $a');
+
+    if(showMsg){
+      _controller.pause();
+      ArtSweetAlert.show(
+          context: context,
+          artDialogArgs: ArtDialogArgs(
+            title: "Times Up",
+            text: "Your score is ${_score}",
+          )
+      );
+      return;
+    }
     int aa = a;
     //show congratulations toast
     if (aa == _res) {
       final player = AudioCache();
+      _controller.start();
       // congrats sound
       player.play('play.wav');
 
@@ -374,6 +507,7 @@ class _StoryGameModeState extends State<StoryGameMode> with SingleTickerProvider
       _score++;
     } else {
       print("ERROR");
+      _controller.pause();
       final player = AudioCache();
       player.play('buzzer.wav');
       WrongMsgDialoge();
@@ -404,75 +538,117 @@ class _StoryGameModeState extends State<StoryGameMode> with SingleTickerProvider
         setState(() {
           showLevel=true;
         });
-
+      }
+    }
+    if(_score>=20&&_score<25){
+      _level=5;
+      if(_score==20){
+        setState(() {
+          showLevel=true;
+        });
+      }
+    }
+    if(_score>=25&&_score<30){
+      _level=6;
+      if(_score==25){
+        setState(() {
+          showLevel=true;
+        });
+      }
+    }
+    if(_score>=30&&_score<35){
+      _level=7;
+      if(_score==30){
+        setState(() {
+          showLevel=true;
+        });
+      }
+    }
+    if(_score>=35&&_score<40){
+      _level=8;
+      if(_score==35){
+        stopWatchTimer.onStartTimer();
+        setState(() {
+          showLevel=true;
+        });
       }
     }
   }
+  static void calltimerEnd() {
+    showMsg=true;
+  }
 
   Future<dynamic> WrongMsgDialoge() {
-    return showDialog(context: context, builder: (context)=>AlertDialog(
-      backgroundColor: Colors.transparent,
-      contentPadding: EdgeInsets.zero,
-      content: Container(
-        alignment: Alignment.bottomCenter,
-        height: MediaQuery.of(context).size.height / 2,
-        decoration: const BoxDecoration(
-          color: Colors.transparent,
-          image: DecorationImage(
-            image: AssetImage(
-              "images/wrong_board.png",
-            ),
-            fit: BoxFit.fill,
-          ),
-        ),
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  GestureDetector(
-                    child: Image.asset(
-                      "images/cancel.png",
-                      fit: BoxFit.fill,
-                      width: 90,
-                      height: 40,
-                    ),
-                    onTap: () {
-                      Navigator.pop(context);
-                      Navigator.pop(context);
-                    },
-                  ),
-                  const SizedBox(
-                    width: 6,
-                  ),
-                  GestureDetector(
-                    child: Image.asset(
-                      "images/again.png",
-                      fit: BoxFit.fill,
-                      width: 125,
-                      height: 40,
-                    ),
-                    onTap: () {
-
-                      Navigator.pop(context);
-                      setState(() {
-                        _score=0;
-                      });
-                    },
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  )
-                ],
+    return showDialog(context: context, builder: (context)=>GestureDetector(
+      onTap: (){
+        setState(() {
+          _score=0;
+        });
+      },
+      child: AlertDialog(
+        backgroundColor: Colors.transparent,
+        contentPadding: EdgeInsets.zero,
+        content: Container(
+          alignment: Alignment.bottomCenter,
+          height: MediaQuery.of(context).size.height / 2,
+          decoration: const BoxDecoration(
+            color: Colors.transparent,
+            image: DecorationImage(
+              image: AssetImage(
+                "images/wrong_board.png",
               ),
-              SizedBox(height: 70,)
-            ],
+              fit: BoxFit.fill,
+            ),
+          ),
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    GestureDetector(
+                      child: Image.asset(
+                        "images/cancel.png",
+                        fit: BoxFit.fill,
+                        width: 90,
+                        height: 40,
+                      ),
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                      },
+                    ),
+                    const SizedBox(
+                      width: 6,
+                    ),
+                    GestureDetector(
+                      child: Image.asset(
+                        "images/again.png",
+                        fit: BoxFit.fill,
+                        width: 125,
+                        height: 40,
+                      ),
+                      onTap: () {
+
+                        Navigator.pop(context);
+                        setState(() {
+                          _score=0;
+                        });
+                      },
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    )
+                  ],
+                ),
+                SizedBox(height: 70,)
+              ],
+            ),
           ),
         ),
       ),
@@ -541,6 +717,7 @@ class _StoryGameModeState extends State<StoryGameMode> with SingleTickerProvider
   }
   void divFunction() {
     setState(() {
+      signImg='images/div.png';
       int aa = (_random.nextInt(8) & -2)+1;
       int bb = (_random.nextInt(8) & -2)+1;
 

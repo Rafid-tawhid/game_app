@@ -49,6 +49,10 @@ dependencies:
   video_player: ^2.4.10
   audioplayers: ^0.20.1
   animated_text_kit: ^4.2.2
+  stop_watch_timer:
+  circular_countdown_timer: ^0.2.0
+  art_sweetalert: ^0.0.5
+
 
 
 
